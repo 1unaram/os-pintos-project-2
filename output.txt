@@ -1,0 +1,79 @@
+qemu-system-i386 -device isa-debug-exit -hda /tmp/9cqxKABcKD.dsk -m 4 -net none -serial stdio
+WARNING: Image format was not specified for '/tmp/9cqxKABcKD.dsk' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+PiLo hda1
+Loading.........
+Kernel command line: crossroads aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
+Pintos booting with 3,968 kB RAM...
+367 pages available in kernel pool.
+367 pages available in user pool.
+Calibrating timer...  419,020,800 loops/s.
+Boot complete.
+initializing 6 vehicles...
+initializing vehicle threads...
+running project2 crossroads ...
+[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 0
+[0;0H[5;1Ha [0;0HUnexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 0
+[0;0H[5;3Ha [0;0HUnexpected interrupt 0x0e (#PF Page-Fault Exception)
+[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 0
+[0;0H[5;5Ha [0;0H[5;1Ha [0;0HUnexpected interrupt 0x0e (#PF Page-Fault Exception)
+[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 0
+[0;0H[5;7Ha [0;0H[5;3Ha [0;0H[5;1Ha [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 0
+[0;0H[5;9Ha [0;0H[5;5Ha [0;0H[5;3Ha [0;0H[5;1Ha [0;0H
