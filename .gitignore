@@ -1,0 +1,4 @@
+.DS_Store
+.vscode* 
+make_clean_result
+make_result
