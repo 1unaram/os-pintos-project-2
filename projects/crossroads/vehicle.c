@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <string.h>
 
 #include "threads/thread.h"
 #include "threads/synch.h"
@@ -54,18 +55,61 @@ const struct position vehicle_path[4][4][12] = {
 
 void parse_vehicles(struct vehicle_info *vehicle_info, char *input)
 {
-	for (int idx = 0; idx < 4; idx++){
-		vehicle_info[idx].id = 'a';
-		// initial state of vehicle must be VEHICLE_STATUS_READY
-		vehicle_info[idx].state = VEHICLE_STATUS_READY; 
-		vehicle_info[idx].start = 'A';
-		vehicle_info[idx].dest = 'A';
-		// type of vehlcle can be normal or ambulance
-		vehicle_info[idx].type = VEHICL_TYPE_NORMAL;
-		// if the vehicle is normal, set the arrival and golden_time -1
-		vehicle_info[idx].arrival = -1;
-		vehicle_info[idx].golden_time = -1;
+
+	// input example: "aAA:bBD:cCD:dDB:fAB5.12:gAC6.13"
+	printf("Parsing vehicles from input: %s\n", input);
+
+    int idx = 0;
+	char *save_ptr;
+    char *token = strtok_r(input, ":", &save_ptr);
+    while (token && idx < 8) {
+        char id, start, dest;
+        int arrival = -1, golden_time = -1;
+        int type = VEHICL_TYPE_NORMAL;
+
+		// 앰뷸런스인지 확인 ('.' 포함)
+        char *dot = strchr(token, '.');
+        if (dot != NULL) {
+            // 앰뷸런스: id start dest arrival_step.golden_time
+
+            size_t len = dot - token; // '.' 이전까지 길이
+            if (len >= 4) {
+                id = token[0];
+                start = token[1];
+                dest = token[2];
+                arrival = atoi(&token[3]);
+                golden_time = atoi(dot + 1);
+                type = VEHICL_TYPE_AMBULANCE;
+            }
+        } else {
+            // 일반 차량: id start dest
+            if (strlen(token) >= 3) {
+                id = token[0];
+                start = token[1];
+                dest = token[2];
+            }
+        }
+
+		vehicle_info[idx].id = id;
+        vehicle_info[idx].start = start;
+        vehicle_info[idx].dest = dest;
+        vehicle_info[idx].type = type;
+        vehicle_info[idx].arrival = arrival;
+        vehicle_info[idx].golden_time = golden_time;
+        vehicle_info[idx].state = VEHICLE_STATUS_READY;
+
+        idx++;
+        token = strtok_r(NULL, ":", &save_ptr);
 	}
+
+	// print parsed vehicles
+	for (int i = 0; i < idx; i++) {
+		printf("Vehicle %c: Start %c, Dest %c, Type %d, Arrival %d, Golden Time %d\n",
+			vehicle_info[i].id, vehicle_info[i].start, vehicle_info[i].dest,
+			vehicle_info[i].type, vehicle_info[i].arrival, vehicle_info[i].golden_time);
+	}
+
+	timer_msleep(10000); // Simulate some delay for parsing
 }
 
 static int is_position_outside(struct position pos)
@@ -103,7 +147,7 @@ static int try_move(int start, int dest, int step, struct vehicle_info *vi)
 	}
 	/* update position */
 	vi->position = pos_next;
-	
+
 	return 1;
 }
 
@@ -132,14 +176,14 @@ void vehicle_loop(void *_vi)
 			step++;
 		}
 
-		/* termination condition. */ 
+		/* termination condition. */
 		if (res == 0) {
 			break;
 		}
 
 		/* unitstep change! */
 		unitstep_changed();
-	}	
+	}
 
 	/* status transition must happen before sema_up */
 	vi->state = VEHICLE_STATUS_FINISHED;

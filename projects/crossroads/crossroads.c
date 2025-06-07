@@ -17,7 +17,7 @@
 
 int crossroads_step;
 
-static void init_map_locks(struct lock ***map_locks) 
+static void init_map_locks(struct lock ***map_locks)
 {
 	int i, j;
 	struct lock **__map_locks;
@@ -84,12 +84,14 @@ void run_crossroads(char **argv)
 		vehicle_info[i].map_locks = map_locks;
 	}
 
+
+
 	init_on_mainthread(thread_cnt);
 
 	blinkers = malloc(sizeof(struct blinker_info) * NUM_BLINKER);
 	init_blinker(blinkers, map_locks, vehicle_info);
 
-	/* prepare threads for each vehicle */ 
+	/* prepare threads for each vehicle */
 	printf("initializing vehicle threads...\n");
 	for (i=0; i<thread_cnt; i++) {
 		char name[16];
@@ -105,7 +107,7 @@ void run_crossroads(char **argv)
 	do {
 		map_draw();
 		for (i=0; i<thread_cnt; i++) {
-			map_draw_vehicle(vehicle_info[i].id, 
+			map_draw_vehicle(vehicle_info[i].id,
 							vehicle_info[i].position.row,
 							vehicle_info[i].position.col);
 		}
