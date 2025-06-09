@@ -107,9 +107,10 @@ void parse_vehicles(struct vehicle_info *vehicle_info, char *input)
 		printf("Vehicle %c: Start %c, Dest %c, Type %d, Arrival %d, Golden Time %d\n",
 			vehicle_info[i].id, vehicle_info[i].start, vehicle_info[i].dest,
 			vehicle_info[i].type, vehicle_info[i].arrival, vehicle_info[i].golden_time);
+
+		printf("Position: (%d, %d)\n", vehicle_info[i].position.row, vehicle_info[i].position.col);
 	}
 
-	timer_msleep(10000); // Simulate some delay for parsing
 }
 
 static int is_position_outside(struct position pos)

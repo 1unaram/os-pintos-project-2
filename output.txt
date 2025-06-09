@@ -1,5 +1,5 @@
-qemu-system-i386 -device isa-debug-exit -hda /tmp/Vf4vawOVZS.dsk -m 4 -net none -serial stdio
-WARNING: Image format was not specified for '/tmp/Vf4vawOVZS.dsk' and probing guessed raw.
+qemu-system-i386 -device isa-debug-exit -hda /tmp/Cw9jyuWO8t.dsk -m 4 -net none -nographic -monitor null
+WARNING: Image format was not specified for '/tmp/Cw9jyuWO8t.dsk' and probing guessed raw.
          Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
          Specify the 'raw' format explicitly to remove the restrictions.
 PiLo hda1
@@ -8,13 +8,54 @@ Kernel command line: crossroads aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
 Pintos booting with 3,968 kB RAM...
 367 pages available in kernel pool.
 367 pages available in user pool.
-Calibrating timer...  101,478,400 loops/s.
+Calibrating timer...  523,468,800 loops/s.
 Boot complete.
 initializing 6 vehicles...
 Parsing vehicles from input: aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
 Vehicle a: Start A, Dest A, Type 0, Arrival -1, Golden Time -1
+Position: (0, 0)
 Vehicle b: Start B, Dest D, Type 0, Arrival -1, Golden Time -1
+Position: (0, 0)
 Vehicle c: Start C, Dest D, Type 0, Arrival -1, Golden Time -1
+Position: (0, 0)
 Vehicle d: Start D, Dest B, Type 0, Arrival -1, Golden Time -1
+Position: (0, 0)
 Vehicle f: Start A, Dest B, Type 1, Arrival 5, Golden Time 12
+Position: (0, 0)
 Vehicle g: Start A, Dest C, Type 1, Arrival 6, Golden Time 13
+Position: (0, 0)
+initializing vehicle threads...
+running project2 crossroads ...
+[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 0
+[0;0H[1;1Ha [0;0H[1;1Hb [0;0H[1;1Hc [0;0H[1;1Hd [0;0H[1;1Hf [0;0H[1;1Hg [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 0
+[0;0H[5;1Ha [0;0H[7;9Hb [0;0H[3;13Hc [0;0H[1;5Hd [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 0
+[0;0H[5;3Ha [0;0H[6;9Hb [0;0H[3;11Hc [0;0H[2;5Hd [0;0H[5;1Hf [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 0
+[0;0H[5;5Ha [0;0H[5;9Hb [0;0H[3;9Hc [0;0H[3;5Hd [0;0H[5;3Hf [0;0H[5;1Hg [0;0H
