@@ -87,9 +87,10 @@ bool is_conflict(struct vehicle_info *vi) {
 
         // 1. 두 차량이 같은 위치로 이동하려는 경우 (head-on collision)
         if (vi_next.row == o_next.row && vi_next.col == o_next.col) {
-
-        }
+            if (vi->type == VEHICL_TYPE_AMBULANCE && other->type != VEHICL_TYPE_AMBULANCE)
+                continue; // vi는 진입, other는 대기
             return true;
+        }
 
         // 2. 두 차량이 서로의 위치를 교차(swap)하려는 경우
         if (vi_next.row == o_cur.row && vi_next.col == o_cur.col &&
