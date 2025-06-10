@@ -15,11 +15,13 @@ struct vehicle_info {
 	char state;
 	char start;
 	char dest;
-	
+
 	char type;
 	char arrival;
 	char golden_time;
-	
+
+	int step;
+
 	struct position position;
 	struct lock **map_locks;
 };

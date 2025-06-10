@@ -1,12 +1,18 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 #include "threads/thread.h"
 #include "threads/synch.h"
 #include "projects/crossroads/vehicle.h"
 #include "projects/crossroads/map.h"
 #include "projects/crossroads/ats.h"
+#include "projects/crossroads/blinker.h"
+
+// For Debugging
+#define gotoxy(y,x) printf("\033[%d;%dH", (y), (x))
 
 /* path. A:0 B:1 C:2 D:3 */
 const struct position vehicle_path[4][4][12] = {
@@ -153,7 +159,7 @@ static int try_move(int start, int dest, int step, struct vehicle_info *vi)
 }
 
 void init_on_mainthread(int thread_cnt){
-	/* Called once before spawning threads */
+
 }
 
 void vehicle_loop(void *_vi)
@@ -171,19 +177,42 @@ void vehicle_loop(void *_vi)
 
 	step = 0;
 	while (1) {
+
+		// debug
+		printf("~ Vehicle %c is at step %d, start %c, dest %c\n", vi->id, step, vi->start, vi->dest);
+
+
+		/* [1] 앰뷸런스 이동 처리  */
+		if (vi->type == VEHICL_TYPE_AMBULANCE) {
+			// arrival 전이면 대기
+			if (crossroads_step < vi->arrival) {
+				notify_vehicle_moved();  // step 증가 조건 안에서만 증가
+				continue;
+			}
+		}
+
+		/* 2. 진입 허가 요청 */
+		if (vi->state == VEHICLE_STATUS_READY || vi->state == VEHICLE_STATUS_RUNNING) {
+			blinker_request_permission(vi, step);
+		}
+
+
 		/* vehicle main code */
 		res = try_move(start, dest, step, vi);
 		if (res == 1) {
 			step++;
+			vi->step++;
 		}
 
-		/* termination condition. */
+		/* termination condition. (차량 도착 시에 종료) */
 		if (res == 0) {
 			break;
 		}
 
 		/* unitstep change! */
-		unitstep_changed();
+		notify_vehicle_moved();
+
+
 	}
 
 	/* status transition must happen before sema_up */

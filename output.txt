@@ -1,14 +1,14 @@
-qemu-system-i386 -device isa-debug-exit -hda /tmp/Cw9jyuWO8t.dsk -m 4 -net none -nographic -monitor null
-WARNING: Image format was not specified for '/tmp/Cw9jyuWO8t.dsk' and probing guessed raw.
+qemu-system-i386 -device isa-debug-exit -hda /tmp/GHxptVkaPs.dsk -m 4 -net none -serial stdio
+WARNING: Image format was not specified for '/tmp/GHxptVkaPs.dsk' and probing guessed raw.
          Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
          Specify the 'raw' format explicitly to remove the restrictions.
 PiLo hda1
-Loading.........
+Loading..........
 Kernel command line: crossroads aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
 Pintos booting with 3,968 kB RAM...
 367 pages available in kernel pool.
 367 pages available in user pool.
-Calibrating timer...  523,468,800 loops/s.
+Calibrating timer...  441,548,800 loops/s.
 Boot complete.
 initializing 6 vehicles...
 Parsing vehicles from input: aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
@@ -26,36 +26,51 @@ Vehicle g: Start A, Dest C, Type 1, Arrival 6, Golden Time 13
 Position: (0, 0)
 initializing vehicle threads...
 running project2 crossroads ...
-[H[JX X   X   X X 
-X X   X   X X 
-      -       
-- - - - - - - 
-      -       
-X X   -   X X 
-X X   -   X X 
-unit step: 0
-[0;0H[1;1Ha [0;0H[1;1Hb [0;0H[1;1Hc [0;0H[1;1Hd [0;0H[1;1Hf [0;0H[1;1Hg [0;0H[H[JX X   X   X X 
-X X   X   X X 
-      -       
-- - - - - - - 
-      -       
-X X   -   X X 
-X X   -   X X 
-unit step: 0
-[0;0H[5;1Ha [0;0H[7;9Hb [0;0H[3;13Hc [0;0H[1;5Hd [0;0H[H[JX X   X   X X 
-X X   X   X X 
-      -       
-- - - - - - - 
-      -       
-X X   -   X X 
-X X   -   X X 
-unit step: 0
-[0;0H[5;3Ha [0;0H[6;9Hb [0;0H[3;11Hc [0;0H[2;5Hd [0;0H[5;1Hf [0;0H[H[JX X   X   X X 
-X X   X   X X 
-      -       
-- - - - - - - 
-      -       
-X X   -   X X 
-X X   -   X X 
-unit step: 0
-[0;0H[5;5Ha [0;0H[5;9Hb [0;0H[3;9Hc [0;0H[3;5Hd [0;0H[5;3Hf [0;0H[5;1Hg [0;0H
+
+
+###############  step 0  ###############
+~ Vehicle a is at step 0, start A, dest A
+~~Checking conflict for vehicle a at step 0
+> Vehicle moved, current step: 0, moved count: 0
+~ Vehicle a is at step 1, start A, dest A
+~~Checking conflict for vehicle a at step 0
+> Vehicle moved, current step: 0, moved count: 1
+~ Vehicle a is at step 2, start A, dest A
+~~Checking conflict for vehicle a at step 0
+> Vehicle moved, current step: 0, moved count: 2
+~ Vehicle a is at step 3, start A, dest A
+~~Checking conflict for vehicle a at step 0
+> Vehicle moved, current step: 0, moved count: 3
+~ Vehicle a is at step 4, start A, dest A
+~~Checking conflict for vehicle a at step 0
+> Vehicle moved, current step: 0, moved count: 4
+~ Vehicle a is at step 5, start A, dest A
+~~Checking conflict for vehicle a at step 0
+> Vehicle moved, current step: 0, moved count: 5
+~ Vehicle b is at step 0, start B, dest D
+~ Vehicle c is at step 0, start C, dest D
+~ Vehicle d is at step 0, start D, dest B
+~ Vehicle f is at step 0, start A, dest B
+~ Vehicle g is at step 0, start A, dest C
+
+
+###############  step 1  ###############
+~ Vehicle a is at step 6, start A, dest A
+~~Checking conflict for vehicle a at step 1
+> Vehicle moved, current step: 1, moved count: 0
+~ Vehicle a is at step 7, start A, dest A
+~~Checking conflict for vehicle a at step 1
+> Vehicle moved, current step: 1, moved count: 1
+~ Vehicle a is at step 8, start A, dest A
+~~Checking conflict for vehicle a at step 1
+> Vehicle moved, current step: 1, moved count: 2
+~ Vehicle a is at step 9, start A, dest A
+~~Checking conflict for vehicle a at step 1
+> Vehicle moved, current step: 1, moved count: 3
+~ Vehicle a is at step 10, start A, dest A
+~~Checking conflict for vehicle a at step 1
+> Vehicle moved, current step: 1, moved count: 4
+~ Vehicle a is at step 11, start A, dest A
+~~Checking conflict for vehicle a at step 1
+~~Checking conflict for vehicle b at step 1
+> Vehicle moved, current step: 1, moved count: 5

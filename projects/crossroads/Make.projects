@@ -8,3 +8,4 @@ projects/crossroads_SRC += projects/crossroads/ats.c
 projects/crossroads_SRC += projects/crossroads/vehicle.c
 projects/crossroads_SRC += projects/crossroads/map.c
 projects/crossroads_SRC += projects/crossroads/blinker.c
+projects/crossroads_SRC += projects/crossroads/priority_sync.c
