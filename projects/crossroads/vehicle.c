@@ -58,7 +58,6 @@ const struct position vehicle_path[4][4][12] = {
 	}
 };
 
-
 void parse_vehicles(struct vehicle_info *vehicle_info, char *input)
 {
 
@@ -129,30 +128,27 @@ static int try_move(int start, int dest, int step, struct vehicle_info *vi)
 {
 	struct position pos_cur, pos_next;
 
-	pos_next = vehicle_path[start][dest][step];
 	pos_cur = vi->position;
+	pos_next = vehicle_path[start][dest][step];
 
+	// When vehicle arrives at the destination -> terminate
 	if (vi->state == VEHICLE_STATUS_RUNNING) {
-		/* check termination */
 		if (is_position_outside(pos_next)) {
-			/* actual move */
 			vi->position.row = vi->position.col = -1;
-			/* release previous */
-			lock_release(&vi->map_locks[pos_cur.row][pos_cur.col]);
+			p_lock_release(&vi->map_locks[pos_cur.row][pos_cur.col]);
 			return 0;
 		}
 	}
 
-	/* lock next position */
-	lock_acquire(&vi->map_locks[pos_next.row][pos_next.col]);
+	// Lock next position
+	p_lock_acquire(&vi->map_locks[pos_next.row][pos_next.col]);
 	if (vi->state == VEHICLE_STATUS_READY) {
-		/* start this vehicle */
 		vi->state = VEHICLE_STATUS_RUNNING;
 	} else {
-		/* release current position */
-		lock_release(&vi->map_locks[pos_cur.row][pos_cur.col]);
+		p_lock_release(&vi->map_locks[pos_cur.row][pos_cur.col]);
 	}
-	/* update position */
+
+	// Update vehicle position
 	vi->position = pos_next;
 
 	return 1;
@@ -178,20 +174,21 @@ void vehicle_loop(void *_vi)
 	step = 0;
 	while (1) {
 
-		// debug
-		printf("~ Vehicle %c is at step %d, start %c, dest %c\n", vi->id, step, vi->start, vi->dest);
-
-
-		/* [1] 앰뷸런스 이동 처리  */
+		// [1] 앰뷸런스 이동 처리
 		if (vi->type == VEHICL_TYPE_AMBULANCE) {
-			// arrival 전이면 대기
+			// 앰뷸런스가 도착 전이면
 			if (crossroads_step < vi->arrival) {
-				notify_vehicle_moved();  // step 증가 조건 안에서만 증가
+				// blinker_request_permission(vi);
 				continue;
+			} else {
+				printf("Vehicle %c is an ambulance and has arrived at the crossroads.\n", vi->id);
 			}
 		}
 
-		/* 2. 진입 허가 요청 */
+		// debug
+		printf("\n~ Vehicle %c is at step %d, start %c, dest %c / State: %d | pos : (%d, %d)\n", vi->id, step, vi->start, vi->dest, vi->state, vi->position.row, vi->position.col);
+
+		// [2] 진입 허가 요청
 		if (vi->state == VEHICLE_STATUS_READY || vi->state == VEHICLE_STATUS_RUNNING) {
 			blinker_request_permission(vi, step);
 		}
@@ -202,17 +199,15 @@ void vehicle_loop(void *_vi)
 		if (res == 1) {
 			step++;
 			vi->step++;
-		}
 
-		/* termination condition. (차량 도착 시에 종료) */
-		if (res == 0) {
+		}
+		else if (res == 0) {
+			/* termination condition. (차량 도착 시에 종료) */
 			break;
 		}
 
 		/* unitstep change! */
 		notify_vehicle_moved();
-
-
 	}
 
 	/* status transition must happen before sema_up */

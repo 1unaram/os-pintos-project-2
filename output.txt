@@ -1,5 +1,5 @@
-qemu-system-i386 -device isa-debug-exit -hda /tmp/GHxptVkaPs.dsk -m 4 -net none -serial stdio
-WARNING: Image format was not specified for '/tmp/GHxptVkaPs.dsk' and probing guessed raw.
+qemu-system-i386 -device isa-debug-exit -hda /tmp/ja62yZfic0.dsk -m 4 -net none -serial stdio
+WARNING: Image format was not specified for '/tmp/ja62yZfic0.dsk' and probing guessed raw.
          Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
          Specify the 'raw' format explicitly to remove the restrictions.
 PiLo hda1
@@ -8,7 +8,7 @@ Kernel command line: crossroads aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
 Pintos booting with 3,968 kB RAM...
 367 pages available in kernel pool.
 367 pages available in user pool.
-Calibrating timer...  441,548,800 loops/s.
+Calibrating timer...  448,102,400 loops/s.
 Boot complete.
 initializing 6 vehicles...
 Parsing vehicles from input: aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
@@ -29,48 +29,37 @@ running project2 crossroads ...
 
 
 ###############  step 0  ###############
-~ Vehicle a is at step 0, start A, dest A
-~~Checking conflict for vehicle a at step 0
-> Vehicle moved, current step: 0, moved count: 0
-~ Vehicle a is at step 1, start A, dest A
-~~Checking conflict for vehicle a at step 0
-> Vehicle moved, current step: 0, moved count: 1
-~ Vehicle a is at step 2, start A, dest A
-~~Checking conflict for vehicle a at step 0
-> Vehicle moved, current step: 0, moved count: 2
-~ Vehicle a is at step 3, start A, dest A
-~~Checking conflict for vehicle a at step 0
-> Vehicle moved, current step: 0, moved count: 3
-~ Vehicle a is at step 4, start A, dest A
-~~Checking conflict for vehicle a at step 0
-> Vehicle moved, current step: 0, moved count: 4
-~ Vehicle a is at step 5, start A, dest A
-~~Checking conflict for vehicle a at step 0
-> Vehicle moved, current step: 0, moved count: 5
-~ Vehicle b is at step 0, start B, dest D
-~ Vehicle c is at step 0, start C, dest D
-~ Vehicle d is at step 0, start D, dest B
-~ Vehicle f is at step 0, start A, dest B
-~ Vehicle g is at step 0, start A, dest C
+
+~ Vehicle a is at step 0, start A, dest A / State: 0 | pos : (-1, -1)
+~~ Vehicle a requesting permission at step 0
+~~~ Checking conflict for vehicle a at step 0
+
+~ Vehicle a is at step 1, start A, dest A / State: 1 | pos : (4, 0)
+~~ Vehicle a requesting permission at step 1
+
+~ Vehicle b is at step 0, start B, dest D / State: 0 | pos : (-1, -1)
+~~ Vehicle b requesting permission at step 0
+~~~ Checking conflict for vehicle b at step 0
+
+~ Vehicle b is at step 1, start B, dest D / State: 1 | pos : (6, 4)
+~~ Vehicle b requesting permission at step 1
+
+~ Vehicle c is at step 0, start C, dest D / State: 0 | pos : (-1, -1)
+~~ Vehicle c requesting permission at step 0
+~~~ Checking conflict for vehicle c at step 0
+
+~ Vehicle c is at step 1, start C, dest D / State: 1 | pos : (2, 6)
+~~ Vehicle c requesting permission at step 1
+
+~ Vehicle d is at step 0, start D, dest B / State: 0 | pos : (-1, -1)
+~~ Vehicle d requesting permission at step 0
+~~~ Checking conflict for vehicle d at step 0
+
+~ Vehicle d is at step 1, start D, dest B / State: 1 | pos : (0, 2)
+~~ Vehicle d requesting permission at step 1
 
 
-###############  step 1  ###############
-~ Vehicle a is at step 6, start A, dest A
-~~Checking conflict for vehicle a at step 1
-> Vehicle moved, current step: 1, moved count: 0
-~ Vehicle a is at step 7, start A, dest A
-~~Checking conflict for vehicle a at step 1
-> Vehicle moved, current step: 1, moved count: 1
-~ Vehicle a is at step 8, start A, dest A
-~~Checking conflict for vehicle a at step 1
-> Vehicle moved, current step: 1, moved count: 2
-~ Vehicle a is at step 9, start A, dest A
-~~Checking conflict for vehicle a at step 1
-> Vehicle moved, current step: 1, moved count: 3
-~ Vehicle a is at step 10, start A, dest A
-~~Checking conflict for vehicle a at step 1
-> Vehicle moved, current step: 1, moved count: 4
-~ Vehicle a is at step 11, start A, dest A
-~~Checking conflict for vehicle a at step 1
-~~Checking conflict for vehicle b at step 1
-> Vehicle moved, current step: 1, moved count: 5
+###############  step 0  ###############
+
+
+###############  step 0  ###############

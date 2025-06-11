@@ -6,12 +6,13 @@
 #include "projects/crossroads/ats.h"
 #include "projects/crossroads/priority_sync.h"
 
+extern struct position vehicle_path[4][4][12];
+
 static struct priority_lock blinker_lock;
 static struct priority_condition cond_all_can_enter;
 static bool vehicle_active[MAX_VEHICLE_COUNT];
 static struct vehicle_info* all_vehicles = NULL;
 static int vehicle_count = 0;
-static bool initialized = false;
 static int moved_vehicle_count = 0;
 static int total_vehicle_count = 0;
 
@@ -21,39 +22,34 @@ void set_total_vehicle_count(int count) {
     p_lock_release(&blinker_lock);
 }
 
+
 void notify_vehicle_moved() {
     p_lock_acquire(&blinker_lock);
 
-    // debug
-    printf("> Vehicle moved, current step: %d, moved count: %d\n", crossroads_step, moved_vehicle_count);
-
     moved_vehicle_count++;
+
     if (moved_vehicle_count >= total_vehicle_count) {
         crossroads_step++;
         unitstep_changed();
         moved_vehicle_count = 0;
         p_cond_broadcast(&cond_all_can_enter, &blinker_lock);
     }
+
     p_lock_release(&blinker_lock);
 }
 
 void init_blinker(struct blinker_info* blinkers, struct lock **map_locks, struct vehicle_info * vehicle_info) {
-    if (!initialized) {
-        p_lock_init(&blinker_lock);
-        p_cond_init(&cond_all_can_enter);
-        all_vehicles = vehicle_info;
-        vehicle_count = 0;
-        while (vehicle_count < MAX_VEHICLE_COUNT && vehicle_info[vehicle_count].id != '\0') {
-            vehicle_active[vehicle_count] = false;
-            vehicle_count++;
-        }
-        initialized = true;
+    p_lock_init(&blinker_lock);
+    p_cond_init(&cond_all_can_enter);
+    all_vehicles = vehicle_info;
+    vehicle_count = 0;
+    while (vehicle_count < MAX_VEHICLE_COUNT) {
+        vehicle_active[vehicle_count] = false;
+        vehicle_count++;
     }
 }
 
 void start_blinker() {
-	/* Called once before spawning threads */
-
     set_total_vehicle_count(vehicle_count);
 }
 
@@ -66,11 +62,11 @@ enum direction_type get_direction_type(int from, int to) {
 bool is_conflict(struct vehicle_info *vi) {
 
     // debug
-    printf("~~ Checking conflict for vehicle %c at step %d\n", vi->id, crossroads_step);
+    printf("~~~ Checking conflict for vehicle %c at step %d\n", vi->id, crossroads_step);
 
     int vi_from = vi->start - 'A';
     int vi_to = vi->dest - 'A';
-    struct position vi_cur = vehicle_path[vi_from][vi_to][step];
+    struct position vi_cur = vehicle_path[vi_from][vi_to][vi->step];
     struct position vi_next = vehicle_path[vi_from][vi_to][vi->step + 1];
 
     // 모든 차량에 대해 충돌 검사
@@ -103,9 +99,10 @@ bool is_conflict(struct vehicle_info *vi) {
 void blinker_request_permission(struct vehicle_info *vi, int step) {
     p_lock_acquire(&blinker_lock);
 
+    // debug
+    printf("~~ Vehicle %c requesting permission at step %d\n", vi->id, step);
 
     while (true) {
-
         // 앰뷸런스 골든 타임 처리
         if (vi->type == VEHICL_TYPE_AMBULANCE) {
             int remain_time = vi->golden_time - crossroads_step;
@@ -120,12 +117,12 @@ void blinker_request_permission(struct vehicle_info *vi, int step) {
     }
 
     // 진입 허가가 나면 차량 활성화 상태를 업데이트
-    for (int i = 0; i < vehicle_count; i++) {
-        if (&all_vehicles[i] == vi) {
-            vehicle_active[i] = true;
-            break;
-        }
-    }
+    // for (int i = 0; i < vehicle_count; i++) {
+    //     if (&all_vehicles[i] == vi) {
+    //         vehicle_active[i] = true;
+    //         break;
+    //     }
+    // }
 
     p_lock_release(&blinker_lock);
 }

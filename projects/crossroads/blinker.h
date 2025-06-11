@@ -14,7 +14,7 @@ void init_blinker(struct blinker_info* blinkers, struct lock **map_locks, struct
 void start_blinker();
 
 void blinker_request_permission(struct vehicle_info *vi, int step);
-void notify_vehicle_moved(void);
+void notify_vehicle_moved();
 void set_total_vehicle_count(int count);
 
 #endif /* __PROJECTS_PROJECT2_BLINKER_H__ */
