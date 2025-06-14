@@ -105,7 +105,7 @@ void run_crossroads(char **argv)
 #if 1
 	/* main loop */
 	do {
-		// // debug
+		// debug
 		// map_draw();
 		// for (i=0; i<thread_cnt; i++) {
 		// 	map_draw_vehicle(vehicle_info[i].id,

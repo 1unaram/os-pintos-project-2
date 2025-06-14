@@ -131,6 +131,10 @@ static int try_move(int start, int dest, int step, struct vehicle_info *vi)
 	pos_cur = vi->position;
 	pos_next = vehicle_path[start][dest][step];
 
+	// debug
+	printf("~~ Vehicle %c trying to move from (%d, %d) to (%d, %d)\n",
+		vi->id, pos_cur.row, pos_cur.col, pos_next.row, pos_next.col);
+
 	// When vehicle arrives at the destination -> terminate
 	if (vi->state == VEHICLE_STATUS_RUNNING) {
 		if (is_position_outside(pos_next)) {
@@ -158,31 +162,34 @@ void init_on_mainthread(int thread_cnt){
 
 }
 
+// Vehicle main loop
 void vehicle_loop(void *_vi)
 {
 	int res;
 	int start, dest, step;
-
 	struct vehicle_info *vi = _vi;
 
 	start = vi->start - 'A';
 	dest = vi->dest - 'A';
+	step = 0;
 
 	vi->position.row = vi->position.col = -1;
 	vi->state = VEHICLE_STATUS_READY;
 
-	step = 0;
 	while (1) {
 
-		// [1] 앰뷸런스 이동 처리
-		if (vi->type == VEHICL_TYPE_AMBULANCE) {
-			// 앰뷸런스가 도착 전이면
-			if (crossroads_step < vi->arrival) {
-				// blinker_request_permission(vi);
+		// [1] 앰뷸런스 도착 전까지 대기
+		if (vi->type == VEHICL_TYPE_AMBULANCE &&crossroads_step < vi->arrival) {
+				// debug
+				printf("~ Vehicle %c is waiting for its arrival step: %d\n", vi->id, vi->arrival);
+
+				notify_vehicle_moved();
+
+
+				p_lock_acquire(&blinker_lock);
+				p_cond_wait(&cond_all_can_enter, &blinker_lock);
+				p_lock_release(&blinker_lock);
 				continue;
-			} else {
-				printf("Vehicle %c is an ambulance and has arrived at the crossroads.\n", vi->id);
-			}
 		}
 
 		// debug
@@ -190,26 +197,31 @@ void vehicle_loop(void *_vi)
 
 		// [2] 진입 허가 요청
 		if (vi->state == VEHICLE_STATUS_READY || vi->state == VEHICLE_STATUS_RUNNING) {
-			blinker_request_permission(vi, step);
+			request_permission_to_blinker(vi, step);
 		}
-
 
 		/* vehicle main code */
 		res = try_move(start, dest, step, vi);
+
+		// 이동 성공: 다음 step으로
 		if (res == 1) {
 			step++;
 			vi->step++;
-
 		}
-		else if (res == 0) {
-			/* termination condition. (차량 도착 시에 종료) */
-			break;
-		}
+		// 목적지 도달: 루프 종료
+		// else if (res == 0) {
+		// 	break;
+		// }
 
-		/* unitstep change! */
+		// 이동 알림
 		notify_vehicle_moved();
+
+		p_lock_acquire(&blinker_lock);
+		p_cond_wait(&cond_all_can_enter, &blinker_lock);
+		p_lock_release(&blinker_lock);
 	}
 
 	/* status transition must happen before sema_up */
+	// 종료 상태로 전환
 	vi->state = VEHICLE_STATUS_FINISHED;
 }

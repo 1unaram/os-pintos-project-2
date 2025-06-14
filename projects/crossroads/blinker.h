@@ -13,8 +13,11 @@ struct blinker_info {
 void init_blinker(struct blinker_info* blinkers, struct lock **map_locks, struct vehicle_info * vehicle_info);
 void start_blinker();
 
-void blinker_request_permission(struct vehicle_info *vi, int step);
+void request_permission_to_blinker(struct vehicle_info *vi, int step);
 void notify_vehicle_moved();
 void set_total_vehicle_count(int count);
+
+extern struct priority_lock blinker_lock;
+extern struct priority_condition cond_all_can_enter;
 
 #endif /* __PROJECTS_PROJECT2_BLINKER_H__ */
