@@ -132,8 +132,8 @@ static int try_move(int start, int dest, int step, struct vehicle_info *vi)
 	pos_next = vehicle_path[start][dest][step];
 
 	// debug
-	printf("~~ Vehicle %c trying to move from (%d, %d) to (%d, %d)\n",
-		vi->id, pos_cur.row, pos_cur.col, pos_next.row, pos_next.col);
+	// printf("~~ Vehicle %c trying to move from (%d, %d) to (%d, %d)\n",
+		// vi->id, pos_cur.row, pos_cur.col, pos_next.row, pos_next.col);
 
 	// When vehicle arrives at the destination -> terminate
 	if (vi->state == VEHICLE_STATUS_RUNNING) {
@@ -179,46 +179,52 @@ void vehicle_loop(void *_vi)
 	while (1) {
 
 		// [1] 앰뷸런스 도착 전까지 대기
-		if (vi->type == VEHICL_TYPE_AMBULANCE &&crossroads_step < vi->arrival) {
+		if (vi->type == VEHICL_TYPE_AMBULANCE && crossroads_step < vi->arrival) {
 				// debug
-				printf("~ Vehicle %c is waiting for its arrival step: %d\n", vi->id, vi->arrival);
+				// printf("~ Vehicle %c is waiting for its arrival step: %d\n", vi->id, vi->arrival);
 
 				notify_vehicle_moved();
-
-
-				p_lock_acquire(&blinker_lock);
-				p_cond_wait(&cond_all_can_enter, &blinker_lock);
-				p_lock_release(&blinker_lock);
+				thread_yield(); // Wait for the next step
 				continue;
 		}
 
 		// debug
-		printf("\n~ Vehicle %c is at step %d, start %c, dest %c / State: %d | pos : (%d, %d)\n", vi->id, step, vi->start, vi->dest, vi->state, vi->position.row, vi->position.col);
+		// printf("\n~ Vehicle %c is at step %d, start %c, dest %c / State: %d | pos : (%d, %d)\n", vi->id, step, vi->start, vi->dest, vi->state, vi->position.row, vi->position.col);
 
 		// [2] 진입 허가 요청
+		bool can_enter = false;
 		if (vi->state == VEHICLE_STATUS_READY || vi->state == VEHICLE_STATUS_RUNNING) {
-			request_permission_to_blinker(vi, step);
+			can_enter = request_permission_to_blinker(vi, step);
+			if (can_enter) {
+				// printf("~~ Vehicle %c granted permission to enter at step %d\n", vi->id, step);
+			} else {
+				// printf("~~ Vehicle %c denied permission to enter at step %d\n", vi->id, step);
+			}
 		}
 
-		/* vehicle main code */
-		res = try_move(start, dest, step, vi);
+		int res = -1;
+		if (can_enter) {
+			res = try_move(start, dest, step, vi);
+			// printf("~~ Vehicle %c try_move result: %d\n", vi->id, res);
 
-		// 이동 성공: 다음 step으로
-		if (res == 1) {
-			step++;
-			vi->step++;
+			if (res == 1) {
+				step++;
+				vi->step++;
+			} else if (res == 0) {
+				notify_vehicle_moved();
+				notify_vehicle_finished();
+				break;
+			}
 		}
-		// 목적지 도달: 루프 종료
-		// else if (res == 0) {
-		// 	break;
-		// }
 
 		// 이동 알림
 		notify_vehicle_moved();
 
-		p_lock_acquire(&blinker_lock);
-		p_cond_wait(&cond_all_can_enter, &blinker_lock);
-		p_lock_release(&blinker_lock);
+		if (can_enter && res == 1) {
+			// printf("~~~ Complete: Vehicle %c moved to (%d, %d) at step %d\n", vi->id, vi->position.row, vi->position.col, step);
+		}
+
+
 	}
 
 	/* status transition must happen before sema_up */

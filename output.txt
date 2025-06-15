@@ -1,5 +1,5 @@
-qemu-system-i386 -device isa-debug-exit -hda /tmp/IxgVH4ZcTG.dsk -m 4 -net none -nographic -monitor null
-WARNING: Image format was not specified for '/tmp/IxgVH4ZcTG.dsk' and probing guessed raw.
+qemu-system-i386 -device isa-debug-exit -hda /tmp/DNlvVx3CoH.dsk -m 4 -net none -serial stdio
+WARNING: Image format was not specified for '/tmp/DNlvVx3CoH.dsk' and probing guessed raw.
          Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
          Specify the 'raw' format explicitly to remove the restrictions.
 PiLo hda1
@@ -8,7 +8,7 @@ Kernel command line: crossroads aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
 Pintos booting with 3,968 kB RAM...
 367 pages available in kernel pool.
 367 pages available in user pool.
-Calibrating timer...  523,468,800 loops/s.
+Calibrating timer...  469,401,600 loops/s.
 Boot complete.
 initializing 6 vehicles...
 Parsing vehicles from input: aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
@@ -26,61 +26,68 @@ Vehicle g: Start A, Dest C, Type 1, Arrival 6, Golden Time 13
 Position: (0, 0)
 initializing vehicle threads...
 running project2 crossroads ...
-
-
-###############  step 0  ###############
-
-~ Vehicle a is at step 0, start A, dest A / State: 0 | pos : (-1, -1)
-~~ Vehicle a requesting permission at step 0
-~~ Vehicle a trying to move from (-1, -1) to (4, 0)
-$ Vehicle moved, total moved: 1 / 6
-
-~ Vehicle b is at step 0, start B, dest D / State: 0 | pos : (-1, -1)
-~~ Vehicle b requesting permission at step 0
-~~ Vehicle b trying to move from (-1, -1) to (6, 4)
-$ Vehicle moved, total moved: 2 / 6
-
-~ Vehicle c is at step 0, start C, dest D / State: 0 | pos : (-1, -1)
-~~ Vehicle c requesting permission at step 0
-~~ Vehicle c trying to move from (-1, -1) to (2, 6)
-$ Vehicle moved, total moved: 3 / 6
-
-~ Vehicle d is at step 0, start D, dest B / State: 0 | pos : (-1, -1)
-~~ Vehicle d requesting permission at step 0
-~~ Vehicle d trying to move from (-1, -1) to (0, 2)
-$ Vehicle moved, total moved: 4 / 6
-~ Vehicle f is waiting for its arrival step: 5
-$ Vehicle moved, total moved: 5 / 6
-~ Vehicle g is waiting for its arrival step: 6
-$ Vehicle moved, total moved: 6 / 6
-
-
-###############  step 1  ###############
-
-~ Vehicle a is at step 1, start A, dest A / State: 1 | pos : (4, 0)
-~~ Vehicle a requesting permission at step 1
-~~ Vehicle a trying to move from (4, 0) to (4, 1)
-$ Vehicle moved, total moved: 1 / 6
-~ Vehicle f is waiting for its arrival step: 5
-$ Vehicle moved, total moved: 2 / 6
-
-~ Vehicle d is at step 1, start D, dest B / State: 1 | pos : (0, 2)
-~~ Vehicle d requesting permission at step 1
-~~ Vehicle d trying to move from (0, 2) to (1, 2)
-$ Vehicle moved, total moved: 3 / 6
-
-~ Vehicle c is at step 1, start C, dest D / State: 1 | pos : (2, 6)
-~~ Vehicle c requesting permission at step 1
-~~ Vehicle c trying to move from (2, 6) to (2, 5)
-$ Vehicle moved, total moved: 4 / 6
-
-~ Vehicle b is at step 1, start B, dest D / State: 1 | pos : (6, 4)
-~~ Vehicle b requesting permission at step 1
-~~ Vehicle b trying to move from (6, 4) to (5, 4)
-$ Vehicle moved, total moved: 5 / 6
-
-
-###############  step 1  ###############
-
-
-###############  step 1  ###############
+[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 0
+[0;0H[1;1Ha [0;0H[1;1Hb [0;0H[1;1Hc [0;0H[1;1Hd [0;0H[1;1Hf [0;0H[1;1Hg [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 1
+[0;0H[5;1Ha [0;0H[7;9Hb [0;0H[3;13Hc [0;0H[1;5Hd [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 2
+[0;0H[5;3Ha [0;0H[6;9Hb [0;0H[3;11Hc [0;0H[2;5Hd [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 3
+[0;0H[5;5Ha [0;0H[6;9Hb [0;0H[3;9Hc [0;0H[3;5Hd [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 4
+[0;0H[5;5Ha [0;0H[6;9Hb [0;0H[2;9Hc [0;0H[4;5Hd [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 4
+[0;0H[5;5Ha [0;0H[6;9Hb [0;0H[1;9Hc [0;0H[4;5Hd [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 4
+[0;0H[5;5Ha [0;0H[6;9Hb [0;0H[1;9Hc [0;0H[4;5Hd [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 4
+[0;0H[5;5Ha [0;0H[6;9Hb [0;0H[1;9Hc [0;0H[4;5Hd [0;0H
