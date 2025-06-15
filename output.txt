@@ -1,5 +1,5 @@
-qemu-system-i386 -device isa-debug-exit -hda /tmp/Csks_dNjVS.dsk -m 4 -net none -serial stdio
-WARNING: Image format was not specified for '/tmp/Csks_dNjVS.dsk' and probing guessed raw.
+qemu-system-i386 -device isa-debug-exit -hda /tmp/rrOhPLcarq.dsk -m 4 -net none -serial stdio
+WARNING: Image format was not specified for '/tmp/rrOhPLcarq.dsk' and probing guessed raw.
          Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
          Specify the 'raw' format explicitly to remove the restrictions.
 PiLo hda1
@@ -8,7 +8,7 @@ Kernel command line: crossroads aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
 Pintos booting with 3,968 kB RAM...
 367 pages available in kernel pool.
 367 pages available in user pool.
-Calibrating timer...  464,486,400 loops/s.
+Calibrating timer...  312,934,400 loops/s.
 Boot complete.
 initializing 6 vehicles...
 Parsing vehicles from input: aAA:bBD:cCD:dDB:fAB5.12:gAC6.13

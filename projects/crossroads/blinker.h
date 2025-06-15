@@ -14,8 +14,8 @@ void init_blinker(struct blinker_info* blinkers, struct lock **map_locks, struct
 void start_blinker();
 
 bool request_permission_to_blinker(struct vehicle_info *vi, int step);
-void notify_vehicle_moved();
-void notify_vehicle_finished();
+void notify_vehicle_moved_to_blinker();
+void notify_vehicle_finished_to_blinker();
 void set_total_vehicle_count(int count);
 
 extern struct priority_lock blinker_lock;

@@ -55,10 +55,10 @@ const struct position vehicle_path[4][4][12] = {
 	}
 };
 
+// 차량 정보를 파싱하는 함수
 void parse_vehicles(struct vehicle_info *vehicle_info, char *input)
 {
-
-	// input example: "aAA:bBD:cCD:dDB:fAB5.12:gAC6.13"
+	// input example: aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
 	printf("Parsing vehicles from input: %s\n", input);
 
     int idx = 0;
@@ -73,7 +73,6 @@ void parse_vehicles(struct vehicle_info *vehicle_info, char *input)
         char *dot = strchr(token, '.');
         if (dot != NULL) {
             // 앰뷸런스: id start dest arrival_step.golden_time
-
             size_t len = dot - token; // '.' 이전까지 길이
             if (len >= 4) {
                 id = token[0];
@@ -104,7 +103,7 @@ void parse_vehicles(struct vehicle_info *vehicle_info, char *input)
         token = strtok_r(NULL, ":", &save_ptr);
 	}
 
-	// print parsed vehicles
+	// 파싱한 차량 정보 출력
 	for (int i = 0; i < idx; i++) {
 		printf("Vehicle %c: Start %c, Dest %c, Type %d, Arrival %d, Golden Time %d\n",
 			vehicle_info[i].id, vehicle_info[i].start, vehicle_info[i].dest,
@@ -115,6 +114,7 @@ void parse_vehicles(struct vehicle_info *vehicle_info, char *input)
 
 }
 
+// 위치가 맵을 벗어났는지 확인하는 함수
 static int is_position_outside(struct position pos)
 {
 	return (pos.row == -1 || pos.col == -1);
@@ -124,15 +124,10 @@ static int is_position_outside(struct position pos)
 static int try_move(int start, int dest, int step, struct vehicle_info *vi)
 {
 	struct position pos_cur, pos_next;
-
 	pos_cur = vi->position;
 	pos_next = vehicle_path[start][dest][step];
 
-	// debug
-	// printf("~~ Vehicle %c trying to move from (%d, %d) to (%d, %d)\n",
-		// vi->id, pos_cur.row, pos_cur.col, pos_next.row, pos_next.col);
-
-	// When vehicle arrives at the destination -> terminate
+	// [1] 차량이 도착지에 도달했을 경우 -> return 0
 	if (vi->state == VEHICLE_STATUS_RUNNING) {
 		if (is_position_outside(pos_next)) {
 			vi->position.row = vi->position.col = -1;
@@ -141,7 +136,7 @@ static int try_move(int start, int dest, int step, struct vehicle_info *vi)
 		}
 	}
 
-	// Lock next position
+	// [2] 다음 이동 위치에 대해서 lock을 획득
 	p_lock_acquire(&vi->map_locks[pos_next.row][pos_next.col]);
 	if (vi->state == VEHICLE_STATUS_READY) {
 		vi->state = VEHICLE_STATUS_RUNNING;
@@ -149,9 +144,10 @@ static int try_move(int start, int dest, int step, struct vehicle_info *vi)
 		p_lock_release(&vi->map_locks[pos_cur.row][pos_cur.col]);
 	}
 
-	// Update vehicle position
+	// [3] 다음 이동 위치 값 저장
 	vi->position = pos_next;
 
+	// [4] 차량 이동 성공
 	return 1;
 }
 
@@ -159,7 +155,7 @@ void init_on_mainthread(int thread_cnt){
 
 }
 
-// Vehicle main loop
+// 차량 스레드 메인 루프 함수
 void vehicle_loop(void *_vi)
 {
 	int res;
@@ -175,56 +171,41 @@ void vehicle_loop(void *_vi)
 
 	while (1) {
 
-		// [1] 앰뷸런스 도착 전까지 대기
+		// [1] 앰뷸런스는 출발 시간(arrival) 전까지 대기
 		if (vi->type == VEHICL_TYPE_AMBULANCE && crossroads_step < vi->arrival) {
-				// debug
-				// printf("~ Vehicle %c is waiting for its arrival step: %d\n", vi->id, vi->arrival);
-
-				notify_vehicle_moved();
-				thread_yield(); // Wait for the next step
+				notify_vehicle_moved_to_blinker();
+				thread_yield();
 				continue;
 		}
 
-		// debug
-		// printf("\n~ Vehicle %c is at step %d, start %c, dest %c / State: %d | pos : (%d, %d)\n", vi->id, step, vi->start, vi->dest, vi->state, vi->position.row, vi->position.col);
-
-		// [2] 진입 허가 요청
+		// [2] 신호등에 진입 허가 요청
 		bool can_enter = false;
 		if (vi->state == VEHICLE_STATUS_READY || vi->state == VEHICLE_STATUS_RUNNING) {
 			can_enter = request_permission_to_blinker(vi, step);
-			if (can_enter) {
-				// printf("~~ Vehicle %c granted permission to enter at step %d\n", vi->id, step);
-			} else {
-				// printf("~~ Vehicle %c denied permission to enter at step %d\n", vi->id, step);
-			}
 		}
 
+		// [3] 차량 이동 시도
 		int res = -1;
 		if (can_enter) {
 			res = try_move(start, dest, step, vi);
-			// printf("~~ Vehicle %c try_move result: %d\n", vi->id, res);
 
+			// [3-1] 차량 이동 성공
 			if (res == 1) {
 				step++;
 				vi->step++;
-			} else if (res == 0) {
-				notify_vehicle_moved();
-				notify_vehicle_finished();
+			}
+			// [3-2] 차량 도착지 도달
+			else if (res == 0) {
+				notify_vehicle_moved_to_blinker();
+				notify_vehicle_finished_to_blinker();
 				break;
 			}
 		}
 
-		// 이동 알림
-		notify_vehicle_moved();
-
-		if (can_enter && res == 1) {
-			// printf("~~~ Complete: Vehicle %c moved to (%d, %d) at step %d\n", vi->id, vi->position.row, vi->position.col, step);
-		}
-
-
+		// [4] 신호등에 차량이 이동을 '시도'하였음을 알림
+		notify_vehicle_moved_to_blinker();
 	}
 
-	/* status transition must happen before sema_up */
-	// 종료 상태로 전환
+	// [5] 차량이 도착지에 도달했으므로 상태를 변경
 	vi->state = VEHICLE_STATUS_FINISHED;
 }
