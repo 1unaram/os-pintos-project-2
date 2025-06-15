@@ -11,9 +11,6 @@
 #include "projects/crossroads/ats.h"
 #include "projects/crossroads/blinker.h"
 
-// For Debugging
-#define gotoxy(y,x) printf("\033[%d;%dH", (y), (x))
-
 /* path. A:0 B:1 C:2 D:3 */
 const struct position vehicle_path[4][4][12] = {
 	/* from A */ {

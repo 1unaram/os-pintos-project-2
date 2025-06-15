@@ -1,5 +1,5 @@
-qemu-system-i386 -device isa-debug-exit -hda /tmp/DNlvVx3CoH.dsk -m 4 -net none -serial stdio
-WARNING: Image format was not specified for '/tmp/DNlvVx3CoH.dsk' and probing guessed raw.
+qemu-system-i386 -device isa-debug-exit -hda /tmp/Csks_dNjVS.dsk -m 4 -net none -serial stdio
+WARNING: Image format was not specified for '/tmp/Csks_dNjVS.dsk' and probing guessed raw.
          Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
          Specify the 'raw' format explicitly to remove the restrictions.
 PiLo hda1
@@ -8,7 +8,7 @@ Kernel command line: crossroads aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
 Pintos booting with 3,968 kB RAM...
 367 pages available in kernel pool.
 367 pages available in user pool.
-Calibrating timer...  469,401,600 loops/s.
+Calibrating timer...  464,486,400 loops/s.
 Boot complete.
 initializing 6 vehicles...
 Parsing vehicles from input: aAA:bBD:cCD:dDB:fAB5.12:gAC6.13
@@ -33,14 +33,6 @@ X X   X   X X
       -       
 X X   -   X X 
 X X   -   X X 
-unit step: 0
-[0;0H[1;1Ha [0;0H[1;1Hb [0;0H[1;1Hc [0;0H[1;1Hd [0;0H[1;1Hf [0;0H[1;1Hg [0;0H[H[JX X   X   X X 
-X X   X   X X 
-      -       
-- - - - - - - 
-      -       
-X X   -   X X 
-X X   -   X X 
 unit step: 1
 [0;0H[5;1Ha [0;0H[7;9Hb [0;0H[3;13Hc [0;0H[1;5Hd [0;0H[H[JX X   X   X X 
 X X   X   X X 
@@ -58,7 +50,7 @@ X X   X   X X
 X X   -   X X 
 X X   -   X X 
 unit step: 3
-[0;0H[5;5Ha [0;0H[6;9Hb [0;0H[3;9Hc [0;0H[3;5Hd [0;0H[H[JX X   X   X X 
+[0;0H[5;5Ha [0;0H[5;9Hb [0;0H[3;9Hc [0;0H[3;5Hd [0;0H[H[JX X   X   X X 
 X X   X   X X 
       -       
 - - - - - - - 
@@ -66,28 +58,85 @@ X X   X   X X
 X X   -   X X 
 X X   -   X X 
 unit step: 4
-[0;0H[5;5Ha [0;0H[6;9Hb [0;0H[2;9Hc [0;0H[4;5Hd [0;0H[H[JX X   X   X X 
+[0;0H[5;7Ha [0;0H[4;9Hb [0;0H[2;9Hc [0;0H[4;5Hd [0;0H[H[JX X   X   X X 
 X X   X   X X 
       -       
 - - - - - - - 
       -       
 X X   -   X X 
 X X   -   X X 
-unit step: 4
-[0;0H[5;5Ha [0;0H[6;9Hb [0;0H[1;9Hc [0;0H[4;5Hd [0;0H[H[JX X   X   X X 
+unit step: 5
+[0;0H[5;9Ha [0;0H[3;9Hb [0;0H[1;9Hc [0;0H[5;5Hd [0;0H[H[JX X   X   X X 
 X X   X   X X 
       -       
 - - - - - - - 
       -       
 X X   -   X X 
 X X   -   X X 
-unit step: 4
-[0;0H[5;5Ha [0;0H[6;9Hb [0;0H[1;9Hc [0;0H[4;5Hd [0;0H[H[JX X   X   X X 
+unit step: 6
+[0;0H[4;9Ha [0;0H[2;9Hb [0;0H[6;5Hd [0;0H[5;1Hf [0;0H[H[JX X   X   X X 
 X X   X   X X 
       -       
 - - - - - - - 
       -       
 X X   -   X X 
 X X   -   X X 
-unit step: 4
-[0;0H[5;5Ha [0;0H[6;9Hb [0;0H[1;9Hc [0;0H[4;5Hd [0;0H
+unit step: 7
+[0;0H[3;9Ha [0;0H[1;9Hb [0;0H[7;5Hd [0;0H[5;3Hf [0;0H[5;1Hg [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 8
+[0;0H[3;7Ha [0;0H[5;5Hf [0;0H[5;3Hg [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 9
+[0;0H[3;5Ha [0;0H[6;5Hf [0;0H[5;5Hg [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 10
+[0;0H[3;3Ha [0;0H[7;5Hf [0;0H[5;7Hg [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 11
+[0;0H[3;1Ha [0;0H[5;9Hg [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 12
+[0;0H[5;11Hg [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 13
+[0;0H[5;13Hg [0;0H[H[JX X   X   X X 
+X X   X   X X 
+      -       
+- - - - - - - 
+      -       
+X X   -   X X 
+X X   -   X X 
+unit step: 14
+[0;0H[H[Jfinished. releasing resources ...
+good bye.

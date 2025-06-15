@@ -15,6 +15,8 @@ int cur_vehicle_count = 0;
 int all_vehicle_count = 0;
 int moved_vehicle_count = 0;
 
+// For Debugging
+#define gotoxy(y,x) printf("\033[%d;%dH", (y), (x))
 
 // blinker.c
 void notify_vehicle_finished() {
@@ -77,6 +79,13 @@ bool is_conflict(struct vehicle_info *vi, int step) {
     struct position vi_next = vehicle_path[vi_from][vi_to][step + 1];
 
 
+    // 도착지 검사
+    if ((vi_next.row == -1 && vi_next.col == -1) ||
+        (vi_cur.row == -1 && vi_cur.col == -1)) {
+        // 차량이 목적지에 도착했을 때
+        return false;
+    }
+
     // [2] 다른 차량들과 충돌 검사
     for (int i = 0; i < all_vehicle_count; i++) {
         struct vehicle_info *other = &all_vehicles[i];
@@ -90,19 +99,16 @@ bool is_conflict(struct vehicle_info *vi, int step) {
         struct position o_cur = vehicle_path[o_from][o_to][o_step];
         struct position o_next = vehicle_path[o_from][o_to][o_step + 1];
 
-
         // 1. 두 차량이 같은 위치로 이동하려는 경우
         if (vi_next.row == o_next.row && vi_next.col == o_next.col) {
-            if (vi->type == VEHICL_TYPE_AMBULANCE && other->type != VEHICL_TYPE_AMBULANCE)
-            continue; // vi는 진입, other는 대기
+            if (vi->type == VEHICL_TYPE_AMBULANCE && other->type != VEHICL_TYPE_AMBULANCE) continue; // vi는 진입, other는 대기
+
             return true;
         }
 
         // 2. 두 차량이 서로의 위치를 교차(swap)하려는 경우
         if (vi_next.row == o_cur.row && vi_next.col == o_cur.col &&
-            o_next.row == vi_cur.row && o_next.col == vi_cur.col)
-            return true;
-
+            o_next.row == vi_cur.row && o_next.col == vi_cur.col) return true;
     }
     return false;
 }
